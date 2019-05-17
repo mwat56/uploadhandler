@@ -247,17 +247,15 @@ func Wrap(aHandler http.Handler,
 
 	return http.HandlerFunc(
 		func(aWriter http.ResponseWriter, aRequest *http.Request) {
-			if "POST" == aRequest.Method {
-				if urlPath(aRequest.URL.Path) == uh.fu {
-					txt, status := uh.ServeHTTP(aWriter, aRequest)
-					// log.Printf("Wrap() status: %d; msg: %s", status, txt) //FIXME REMOVE
-					if 200 == status {
-						http.Redirect(aWriter, aRequest, uh.nu, http.StatusSeeOther)
-					} else {
-						uh.returnError(aWriter, []byte(txt), status)
-					}
-					return
+			if ("POST" == aRequest.Method) && (urlPath(aRequest.URL.Path) == uh.fu) {
+				txt, status := uh.ServeHTTP(aWriter, aRequest)
+				// log.Printf("Wrap() status: %d; msg: %s", status, txt) //FIXME REMOVE
+				if 200 == status {
+					http.Redirect(aWriter, aRequest, uh.nu, http.StatusSeeOther)
+				} else {
+					uh.returnError(aWriter, []byte(txt), status)
 				}
+				return
 			}
 			aHandler.ServeHTTP(aWriter, aRequest)
 		})
