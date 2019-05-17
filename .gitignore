@@ -1,0 +1,8 @@
+*~
+*.db
+demo
+_demo/
+.git/
+static/
+TODO*
+.vscode/
