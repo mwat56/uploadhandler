@@ -68,11 +68,32 @@ Here is a very [simple example](https://github.com/mwat56/go-uploadhandler/blob/
         }
     } // main()
 
-You'll probably save the required values for e.g. `aDestDir` and `aMaxSize` in some kind of config-file, reading them at start of your web-server, and passing them along to the final `Wrap()` call instead of hard-coding them like in the example above.
+You'll probably save the required values for e.g. `aDestDir` and `aMaxSize` in some kind of config-file, reading them at start of your web-server, and passing them along to the final `Wrap(…)` call instead of hard-coding them like in the example above.
 And the values of `anUpURL` and `aFieldName` must, obviously, correspond with those you're actually using in your own application.
 If you don't use [customised error pages](https://github.com/mwat56/go-errorhandler) you can pass `nil` for the `aPager` argument as done in the example.
 
 So, to add the file-upload functionality to your web-server application all that's needed is a single `Wrap()` function call. That's it.
+
+However, if for some reason you'd like to be a little more "hands on", you can use another function to get a `TUploadHandler` instance:
+
+    // NewHandler returns a new `tUploadHandler` instance.
+    func NewHandler(aDestDir, aFieldName, anUpURL, aNextURL string,
+        aMaxSize int64) *TUploadHandler {…}
+
+Apart from the current HTTP handler and the error handler it uses the same arguments as the `Wrap(…)` function.
+The `NewHandler()` result provides the method
+
+    // ServeUpload handles the incoming file upload.
+    func (uh *TUploadHandler) ServeUpload(aWriter http.ResponseWriter,
+        aRequest *http.Request) (string, int) {…}
+
+This method does the actual upload handling.
+It returns a string (holding a possible error message) and an integer (holding the HTTP status code).
+If the returned status code is `200` (i.e. everything alright) then the string return value will be the name of the processed file.
+In all other cases (i.e. result status != 200) the calling application can react to the return values as it sees fit.
+
+You can use several `TUploadHandler` instances to serve different URLs and different destination directories etc.
+Insofar calling `NewHandler()` and then `ServeUpload(…)` gives you more flexibility then simply calling `Wrap(…)`.
 
 ## Licence
 
