@@ -18,7 +18,7 @@ You can use `Go` to install this package for you:
 
 The main function to call is
 
-    // Wrap returns a handler function that includes error page handling,
+    // Wrap returns a handler function that includes upload handling,
     // wrapping the given `aHandler` and calling it internally.
     //
     func Wrap(aHandler http.Handler,

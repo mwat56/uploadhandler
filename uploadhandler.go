@@ -59,7 +59,7 @@ func (uh *TUploadHandler) returnError(aWriter http.ResponseWriter,
 // ServeUpload handles the incoming file upload.
 //
 // The first return value will provide a short error message
-// and the second return value is the HTTP status code.
+// and the second return value the HTTP status code.
 // If that code is `200` (i.e. everything went well) then the
 // message return value will hold the path/file name of the
 // saved file.
@@ -171,7 +171,7 @@ func getFileContentType(aFile multipart.File) (string, error) {
 	return contentType, nil
 } // getFileContentType()
 
-// NewHandler returns a new `tUploadHandler` instance.
+// NewHandler returns a new `TUploadHandler` instance.
 //
 // `aDestDir` is the directory to place the uploaded files.
 //
@@ -213,7 +213,7 @@ func urlPath(aURL string) string {
 	return aURL
 } // urlPath()
 
-// Wrap returns a handler function that includes error page handling,
+// Wrap returns a handler function that includes upload handling,
 // wrapping the given `aHandler` and calling it internally.
 //
 // `aHandler` the previous handler responding to the HTTP request.
@@ -228,7 +228,8 @@ func urlPath(aURL string) string {
 //
 // `aMaxSize` the max. accepted size of uploaded files.
 //
-// `aPager` optional provider of error message pages (or `nil` if not needed).
+// `aPager` optional provider of customised error message pages
+// (or `nil` if not needed).
 func Wrap(aHandler http.Handler,
 	aDestDir, aFieldName, anUpURL, aNextURL string,
 	aMaxSize int64, aPager errorhandler.TErrorPager) http.Handler {
