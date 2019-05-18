@@ -33,9 +33,7 @@ type (
 		dd string                   // destination directory
 		ep errorhandler.TErrorPager // provider of customised error pages
 		fn string                   // form field name
-		fu string                   // Form[action] URL
 		ms int64                    // max. upload file size
-		nu string                   // next URL to go after successful upload
 	}
 )
 
@@ -179,19 +177,11 @@ func getFileContentType(aFile multipart.File) (string, error) {
 //
 // `aFieldName` the name/ID of the form/input holding the uploaded file.
 //
-// `anUpURL` the URL uploads are POSTed to.
-//
-// `aNextURL` the URL to redirect the user after a asuccessful upload.
-//
 // `aMaxSize` the max. accepted size of uploaded files.
-func NewHandler(aDestDir, aFieldName, anUpURL, aNextURL string,
-	aMaxSize int64) *TUploadHandler {
+func NewHandler(aDestDir, aFieldName string, aMaxSize int64) *TUploadHandler {
 	result := TUploadHandler{
-		ep: nil,
 		fn: aFieldName,
-		fu: anUpURL,
 		ms: aMaxSize,
-		nu: aNextURL,
 	}
 	if bd, err := filepath.Abs(aDestDir); nil == err {
 		result.dd = bd
@@ -242,15 +232,15 @@ func urlPath(aURL string) string {
 func Wrap(aHandler http.Handler,
 	aDestDir, aFieldName, anUpURL, aNextURL string,
 	aMaxSize int64, aPager errorhandler.TErrorPager) http.Handler {
-	uh := NewHandler(aDestDir, aFieldName, anUpURL, aNextURL, aMaxSize)
+	uh := NewHandler(aDestDir, aFieldName, aMaxSize)
 	uh.ep = aPager
 
 	return http.HandlerFunc(
 		func(aWriter http.ResponseWriter, aRequest *http.Request) {
-			if ("POST" == aRequest.Method) && (urlPath(aRequest.URL.Path) == uh.fu) {
+			if ("POST" == aRequest.Method) && (urlPath(aRequest.URL.Path) == anUpURL) {
 				txt, status := uh.ServeUpload(aWriter, aRequest)
 				if 200 == status {
-					http.Redirect(aWriter, aRequest, uh.nu, http.StatusSeeOther)
+					http.Redirect(aWriter, aRequest, aNextURL, http.StatusSeeOther)
 				} else {
 					uh.returnError(aWriter, []byte(txt), status)
 				}

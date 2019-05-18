@@ -77,11 +77,16 @@ So, to add the file-upload functionality to your web-server application all that
 However, if for some reason you'd like to be a little more "hands on", you can use another function to get a `TUploadHandler` instance:
 
     // NewHandler returns a new `tUploadHandler` instance.
-    func NewHandler(aDestDir, aFieldName, anUpURL, aNextURL string,
+    func NewHandler(aDestDir, aFieldName string,
         aMaxSize int64) *TUploadHandler {…}
 
-Apart from the current HTTP handler and the error handler it uses the same arguments as the `Wrap(…)` function.
-The `NewHandler()` result provides the method
+This function call needs only a subset of the arguments passed to the `Wrap(…)` function:
+
+* `aDestDir`: the directory where the incoming file is finally stored after processing it.
+* `aFieldName`: the name/ID of the form/field your web-page uses to accept the file-upload.
+* `aMaxSize`: the max. accepted size of uploaded files.
+
+The `NewHandler()` function's result provides the method
 
     // ServeUpload handles the incoming file upload.
     func (uh *TUploadHandler) ServeUpload(aWriter http.ResponseWriter,
