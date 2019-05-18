@@ -94,11 +94,12 @@ The `NewHandler()` function's result provides the method
 
 This method does the actual upload handling.
 It returns a string (holding a possible error message) and an integer (holding the HTTP status code).
-If the returned status code is `200` (i.e. everything alright) then the string return value will be the name of the processed file.
-In all other cases (i.e. result status != 200) the calling application can react to the return values as it sees fit.
+If the returned status code is `200` (i.e. everything's alright) then the string return value will be the name of the processed file.
+In all other cases (i.e. result `status != 200`) the calling application can react to the return values as it sees fit.
 
 You can use several `TUploadHandler` instances to serve different URLs and different destination directories etc.
 Insofar calling `NewHandler()` and then `ServeUpload(…)` gives you more flexibility then simply calling `Wrap(…)`.
+On the other hand, you could call `Wrap(…)` several times, wrapping one instance within the other and thus react to different URLs and form/fields etc. …
 
 ## Licence
 
