@@ -44,10 +44,10 @@ type (
 //
 // `aWriter` writes the response to the remote user.
 //
-// `aData` is the orignal error text.
+// `aData` is the original error text.
 //
 // `aStatus` is the number of the actual HTTP error.
-func (uh TUploadHandler) returnError(aWriter http.ResponseWriter,
+func (uh *TUploadHandler) returnError(aWriter http.ResponseWriter,
 	aData []byte, aStatus int) {
 	if nil != uh.ep {
 		if txt := uh.ep.GetErrorPage(aData, aStatus); 0 < len(txt) {
@@ -58,12 +58,18 @@ func (uh TUploadHandler) returnError(aWriter http.ResponseWriter,
 	aWriter.Write(aData)
 } // returnError()
 
-// ServeHTTP handles the incoming file upload.
+// ServeUpload handles the incoming file upload.
+//
+// The first return value will provide a short error message
+// and the second return value is the HTTP status code.
+// If that code is `200` (i.e. everything went well) then the
+// message return value will hold the path/file name of the
+// saved file.
 //
 // `aWriter` writes the response to the remote user.
 //
 // `aRequest` is the incoming upload request.
-func (uh TUploadHandler) ServeHTTP(aWriter http.ResponseWriter,
+func (uh *TUploadHandler) ServeUpload(aWriter http.ResponseWriter,
 	aRequest *http.Request) (string, int) {
 
 	// first, check the file size
@@ -78,16 +84,13 @@ func (uh TUploadHandler) ServeHTTP(aWriter http.ResponseWriter,
 		return "Error retrieving file", http.StatusUnprocessableEntity
 	}
 	defer inFile.Close()
-	// log.Printf("ServeHTTP() Header: %s; Size: %d", fheader.Header, fheader.Size) //FIXME REMOVE
 
 	fileType := ""
 	if fileType, err = getFileContentType(inFile); nil != err {
 		return "Invalid file", http.StatusUnprocessableEntity
 	}
-	// log.Printf("ServeHTTP() fileType: `%s`", fileType) //FIXME REMOVE
 	if 0 == len(fileType) {
 		fileType = "application/octet-stream"
-		// log.Printf("ServeHTTP() fileType: `%s`", fileType) //FIXME REMOVE
 	}
 
 	fileExt := ""
@@ -100,7 +103,6 @@ func (uh TUploadHandler) ServeHTTP(aWriter http.ResponseWriter,
 	} else {
 		return "Can't read file type", http.StatusUnsupportedMediaType
 	}
-	// log.Printf("ServeHTTP() fileExt: `%s`", fileExt) //FIXME REMOVE
 
 	switch fileExt {
 	case ".asc":
@@ -126,14 +128,11 @@ func (uh TUploadHandler) ServeHTTP(aWriter http.ResponseWriter,
 		".wav", ".xhtml", ".xls", ".xpi", ".xsl":
 		fileExt = ""
 	}
-	// log.Printf("ServeHTTP() newExt: `%s`", fileExt) //FIXME REMOVE
 
-	fileName := fmt.Sprintf("%x_%s%s",
+	newPathFn := filepath.Join(uh.dd, fmt.Sprintf("%x_%s%s",
 		time.Now().UnixNano(),
 		strings.ReplaceAll(fheader.Filename, " ", "_"),
-		fileExt)
-	newPathFn := filepath.Join(uh.dd, fileName)
-	// log.Printf("ServeHTTP() newPathFn: %s", newPathFn) //FIXME REMOVE
+		fileExt))
 
 	//TODO
 	//FIXME use os.Rename() instead of copying the whole data
@@ -150,12 +149,15 @@ func (uh TUploadHandler) ServeHTTP(aWriter http.ResponseWriter,
 		return "Can't write destination file", http.StatusInsufficientStorage
 	}
 
-	return fileName, 200
-} // ServeHTTP()
+	return newPathFn, 200
+} // ServeUpload()
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 // `getFileContentType()` returns the content type of `aFile`
+//
+// The given `aFile` is expected to implement both the `io.Reader`
+// and the `io.Seeker` interfaces.
 //
 // `aFile` is the file the data of which is checked.
 func getFileContentType(aFile multipart.File) (string, error) {
@@ -182,12 +184,10 @@ func getFileContentType(aFile multipart.File) (string, error) {
 // `aNextURL` the URL to redirect the user after a asuccessful upload.
 //
 // `aMaxSize` the max. accepted size of uploaded files.
-//
-// `aPager` optional provider of error message pages (or `nil` if not needed).
 func NewHandler(aDestDir, aFieldName, anUpURL, aNextURL string,
-	aMaxSize int64, aPager errorhandler.TErrorPager) *TUploadHandler {
+	aMaxSize int64) *TUploadHandler {
 	result := TUploadHandler{
-		ep: aPager,
+		ep: nil,
 		fn: aFieldName,
 		fu: anUpURL,
 		ms: aMaxSize,
@@ -242,14 +242,13 @@ func urlPath(aURL string) string {
 func Wrap(aHandler http.Handler,
 	aDestDir, aFieldName, anUpURL, aNextURL string,
 	aMaxSize int64, aPager errorhandler.TErrorPager) http.Handler {
-	uh := NewHandler(aDestDir, aFieldName, anUpURL, aNextURL,
-		aMaxSize, aPager)
+	uh := NewHandler(aDestDir, aFieldName, anUpURL, aNextURL, aMaxSize)
+	uh.ep = aPager
 
 	return http.HandlerFunc(
 		func(aWriter http.ResponseWriter, aRequest *http.Request) {
 			if ("POST" == aRequest.Method) && (urlPath(aRequest.URL.Path) == uh.fu) {
-				txt, status := uh.ServeHTTP(aWriter, aRequest)
-				// log.Printf("Wrap() status: %d; msg: %s", status, txt) //FIXME REMOVE
+				txt, status := uh.ServeUpload(aWriter, aRequest)
 				if 200 == status {
 					http.Redirect(aWriter, aRequest, uh.nu, http.StatusSeeOther)
 				} else {
