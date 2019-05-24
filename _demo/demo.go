@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"os"
 
-	uploadhandler "github.com/mwat56/go-uploadhandler"
+	"github.com/mwat56/uploadhandler"
 )
 
 // `testHandler()` is the demo page handler

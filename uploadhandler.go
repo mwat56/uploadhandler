@@ -24,7 +24,7 @@ import (
 	"strings"
 	"time"
 
-	errorhandler "github.com/mwat56/go-errorhandler"
+	"github.com/mwat56/errorhandler"
 )
 
 type (

@@ -1,5 +1,5 @@
-module github.com/mwat56/go-uploadhandler
+module github.com/mwat56/uploadhandler
+
+require github.com/mwat56/errorhandler v1.0.2
 
 go 1.12
-
-require github.com/mwat56/go-errorhandler v1.0.0

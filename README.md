@@ -1,7 +1,14 @@
 # UploadHandler
 
-[![GoDoc](https://godoc.org/github.com/mwat56/go-uploadhandler?status.svg)](https://godoc.org/github.com/mwat56/go-uploadhandler)
-[![view examples](https://img.shields.io/badge/learn%20by-examples-0077b3.svg?style=flat-square)](https://github.com/mwat56/go-uploadhandler/blob/master/_demo/demo.go)
+[![GoDoc](https://godoc.org/github.com/mwat56/uploadhandler?status.svg)](https://godoc.org/github.com/mwat56/uploadhandler)
+[![view examples](https://img.shields.io/badge/learn%20by-examples-0077b3.svg?style=flat-square)](https://github.com/mwat56/uploadhandler/blob/master/_demo/demo.go)
+[![License](https://img.shields.io/eclipse-marketplace/l/notepad4e.svg)](https://github.com/mwat56/uploadhandler/blob/master/LICENSE)
+
+- [UploadHandler](#uploadhandler)
+	- [Purpose](#purpose)
+	- [Installation](#installation)
+	- [Usage](#usage)
+	- [Licence](#licence)
 
 ## Purpose
 
@@ -12,7 +19,7 @@ This package does just this: it accepts uploads (up to a certain size) and store
 
 You can use `Go` to install this package for you:
 
-    go get -u github.com/mwat56/go-uploadhandler
+    go get -u github.com/mwat56/uploadhandler
 
 ## Usage
 
@@ -39,9 +46,9 @@ This URL will be intercepted (if it's accessed by the POST HTTP method) and its 
 Files bigger than that value will be rejected.
 Think carefully about which size will suit your actual needs.
 * `aPager` is an optional provider of error message pages (or `nil` if not needed).
-– See [github.com/mwat56/go-errorhandler](https://github.com/mwat56/go-errorhandler) for details about that package.
+– See [github.com/mwat56/errorhandler](https://github.com/mwat56/errorhandler) for details about that package.
 
-Here is a very [simple example](https://github.com/mwat56/go-uploadhandler/blob/master/_demo/demo.go) using this package:
+Here is a very [simple example](https://github.com/mwat56/uploadhandler/blob/master/_demo/demo.go) using this package:
 
     func testHandler(aWriter http.ResponseWriter, aRequest *http.Request) {
         // the upload form to show
