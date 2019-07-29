@@ -1,19 +1,23 @@
 # UploadHandler
 
+[![Golang](https://img.shields.io/badge/Language-Go-green.svg)](https://golang.org)
 [![GoDoc](https://godoc.org/github.com/mwat56/uploadhandler?status.svg)](https://godoc.org/github.com/mwat56/uploadhandler)
-[![view examples](https://img.shields.io/badge/learn%20by-examples-0077b3.svg?style=flat-square)](https://github.com/mwat56/uploadhandler/blob/master/_demo/demo.go)
-[![License](https://img.shields.io/eclipse-marketplace/l/notepad4e.svg)](https://github.com/mwat56/uploadhandler/blob/master/LICENSE)
+[![Size](https://img.shields.io/github/repo-size/mwat56/uploadhandler.svg)](https://github.com/mwat56/uploadhandler/)
+[![Tag](https://img.shields.io/github/tag/mwat56/uploadhandler.svg)](https://github.com/mwat56/uploadhandler/tags)
+[![View examples](https://img.shields.io/badge/learn%20by-examples-0077b3.svg)](https://github.com/mwat56/uploadhandler/blob/master/_demo/demo.go)
+[![License](https://img.shields.io/github/license/mwat56/uploadhandler.svg)](https://github.com/mwat56/uploadhandler/blob/master/LICENSE)
 
 - [UploadHandler](#uploadhandler)
 	- [Purpose](#purpose)
 	- [Installation](#installation)
 	- [Usage](#usage)
+	- [Libraries](#libraries)
 	- [Licence](#licence)
 
 ## Purpose
 
 Sometimes a web-server application needs a way to accept file uploads from the remote users.
-This package does just this: it accepts uploads (up to a certain size) and stores them in a configurable directory.
+This middleware package does just this: it accepts uploads (up to a certain size) and stores them in a configurable directory.
 
 ## Installation
 
@@ -36,7 +40,7 @@ While at first glance the number of arguments seems to be overwhelming they allo
 Let's look at the arguments one by one:
 
 * `aHandler` is the handler function which you're already using for your web-server.
-It will continue to work as it used to before except that a certain URL (configred by `anUpURL`, see below) will be intercepted if something gets POSTed to it.
+It will continue to work as it used to before except that a certain URL (configured by `anUpURL`, see below) will be intercepted if something gets POSTed to it.
 * `aDestDir` is the directory where the incoming file is finally stored after processing it.
 * `aFieldName` is the name/ID of the form/field your web-page uses to accept the file-upload.
 * `anUpURL` is the URL your web-page's `FORM` element POSTs its data to.
@@ -107,6 +111,12 @@ In all other cases (i.e. result `status != 200`) the calling application can rea
 You can use several `TUploadHandler` instances to serve different URLs and different destination directories etc.
 Insofar calling `NewHandler()` and then `ServeUpload(…)` gives you more flexibility then simply calling `Wrap(…)`.
 On the other hand, you could call `Wrap(…)` several times, wrapping one instance within the other and thus react to different URLs and form/fields etc. …
+
+## Libraries
+
+The following external libraries were used building `UploadHandler`:
+
+* [ErrorHandler](https://github.com/mwat56/errorhandler)
 
 ## Licence
 

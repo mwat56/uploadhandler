@@ -1,5 +1,5 @@
 /*
-Package uploadhandler implements a simple handler for HTTP file uploads.
+Package uploadhandler implements a simple middleware plugin for HTTP file uploads.
 
     Copyright © 2019 M.Watermann, 10247 Berlin, Germany
                     All rights reserved
