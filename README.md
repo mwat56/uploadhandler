@@ -1,11 +1,12 @@
 # UploadHandler
 
-[![Golang](https://img.shields.io/badge/Language-Go-green.svg)](https://golang.org)
-[![GoDoc](https://godoc.org/github.com/mwat56/uploadhandler?status.svg)](https://godoc.org/github.com/mwat56/uploadhandler)
+[![Golang](https://img.shields.io/badge/Language-Go-green.svg)](https://golang.org/)
+[![GoDoc](https://godoc.org/github.com/mwat56/uploadhandler?status.svg)](https://godoc.org/github.com/mwat56/uploadhandler/)
+[![Issues](https://img.shields.io/github/issues/mwat56/uploadhandler.svg)](https://github.com/mwat56/uploadhandler/issues?q=is%3Aopen+is%3Aissue)
 [![Size](https://img.shields.io/github/repo-size/mwat56/uploadhandler.svg)](https://github.com/mwat56/uploadhandler/)
 [![Tag](https://img.shields.io/github/tag/mwat56/uploadhandler.svg)](https://github.com/mwat56/uploadhandler/tags)
-[![View examples](https://img.shields.io/badge/learn%20by-examples-0077b3.svg)](https://github.com/mwat56/uploadhandler/blob/master/_demo/demo.go)
 [![License](https://img.shields.io/github/license/mwat56/uploadhandler.svg)](https://github.com/mwat56/uploadhandler/blob/master/LICENSE)
+[![View examples](https://img.shields.io/badge/learn%20by-examples-0077b3.svg)](https://github.com/mwat56/uploadhandler/blob/master/_demo/demo.go)
 
 - [UploadHandler](#uploadhandler)
 	- [Purpose](#purpose)
@@ -81,7 +82,7 @@ Here is a very [simple example](https://github.com/mwat56/uploadhandler/blob/mas
 
 You'll probably save the required values for e.g. `aDestDir` and `aMaxSize` in some kind of config-file, reading them at start of your web-server, and passing them along to the final `Wrap(…)` call instead of hard-coding them like in the example above.
 And the values of `anUpURL` and `aFieldName` must, obviously, correspond with those you're actually using in your own application.
-If you don't use [customised error pages](https://github.com/mwat56/go-errorhandler) you can pass `nil` for the `aPager` argument as done in the example.
+If you don't use [customised error pages](https://github.com/mwat56/errorhandler) you can pass `nil` for the `aPager` argument as done in the example.
 
 So, to add the file-upload functionality to your web-server application all that's needed is a single `Wrap()` function call. That's it.
 
@@ -116,7 +117,7 @@ On the other hand, you could call `Wrap(…)` several times, wrapping one instan
 
 The following external libraries were used building `UploadHandler`:
 
-* [ErrorHandler](https://github.com/mwat56/errorhandler)
+* [ErrorHandler](https://github.com/mwat56/errorhandler/)
 
 ## Licence
 
