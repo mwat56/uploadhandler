@@ -37,7 +37,7 @@ type (
 	}
 )
 
-// `returnError()` sends a (possibly customized) error message
+// `returnError()` sends a (possibly customised) error message
 // to the remote user.
 //
 // `aWriter` writes the response to the remote user.
