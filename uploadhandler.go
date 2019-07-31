@@ -6,6 +6,8 @@
 
 package uploadhandler
 
+//lint:file-ignore ST1017 - I prefer Yoda conditions
+
 /*
 CREDITS for getting me started:
 https://zupzup.org/go-http-file-upload-download/
