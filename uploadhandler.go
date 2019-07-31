@@ -53,7 +53,7 @@ func (uh *TUploadHandler) returnError(aWriter http.ResponseWriter,
 		}
 	}
 	aWriter.WriteHeader(aStatus)
-	aWriter.Write(aData)
+	_, _ = aWriter.Write(aData)
 } // returnError()
 
 // ServeUpload handles the incoming file upload.
@@ -137,7 +137,7 @@ func (uh *TUploadHandler) ServeUpload(aWriter http.ResponseWriter,
 	//
 
 	// copy file into the configured destination directory
-	newFile, err := os.OpenFile(newPathFn, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0664)
+	newFile, err := os.OpenFile(newPathFn, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0640)
 	if nil != err {
 		return "Can't open destination file", http.StatusInternalServerError
 	}
