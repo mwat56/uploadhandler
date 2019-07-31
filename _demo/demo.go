@@ -24,7 +24,7 @@ func testHandler(aWriter http.ResponseWriter, aRequest *http.Request) {
 
 	// send it to the remote user:
 	aWriter.WriteHeader(200)
-	aWriter.Write([]byte(page))
+	_, _ = aWriter.Write([]byte(page))
 	// POST is handled by the UploadHandler
 } // testHandler()
 

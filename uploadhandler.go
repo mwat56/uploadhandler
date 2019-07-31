@@ -139,7 +139,7 @@ func (uh *TUploadHandler) ServeUpload(aWriter http.ResponseWriter,
 	//
 
 	// copy file into the configured destination directory
-	newFile, err := os.OpenFile(newPathFn, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0640)
+	newFile, err := os.OpenFile(newPathFn, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0640)// #nosec G302
 	if nil != err {
 		return "Can't open destination file", http.StatusInternalServerError
 	}
