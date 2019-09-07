@@ -81,7 +81,7 @@ Here is a very [simple example](https://github.com/mwat56/uploadhandler/blob/mas
         }
     } // main()
 
-You'll probably save the required values for e.g. `aDestDir` and `aMaxSize` in some kind of config-file, reading them at start of your web-server, and passing them along to the final `Wrap(…)` call instead of hard-coding them like in the example above.
+You'll probably store the required values for e.g. `aDestDir` and `aMaxSize` in some kind of config-file, reading them at start of your web-server, and passing them along to the final `Wrap(…)` call instead of hard-coding them like in the example above.
 And the values of `anUpURL` and `aFieldName` must, obviously, correspond with those you're actually using in your own application.
 If you don't use [customised error pages](https://github.com/mwat56/errorhandler) you can pass `nil` for the `aPager` argument as done in the example.
 

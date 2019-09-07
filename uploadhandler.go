@@ -42,11 +42,11 @@ type (
 // `returnError()` sends a (possibly customised) error message
 // to the remote user.
 //
-// `aWriter` writes the response to the remote user.
+//	`aWriter` writes the response to the remote user.
 //
-// `aData` is the original error text.
+//	`aData` is the original error text.
 //
-// `aStatus` is the number of the actual HTTP error.
+//	`aStatus` is the number of the actual HTTP error.
 func (uh *TUploadHandler) returnError(aWriter http.ResponseWriter,
 	aData []byte, aStatus int) {
 	if nil != uh.ep {
@@ -66,9 +66,9 @@ func (uh *TUploadHandler) returnError(aWriter http.ResponseWriter,
 // message return value will hold the path/file name of the
 // saved file.
 //
-// `aWriter` writes the response to the remote user.
+//	`aWriter` writes the response to the remote user.
 //
-// `aRequest` is the incoming upload request.
+//	`aRequest` is the incoming upload request.
 func (uh *TUploadHandler) ServeUpload(aWriter http.ResponseWriter,
 	aRequest *http.Request) (string, int) {
 
@@ -123,7 +123,8 @@ func (uh *TUploadHandler) ServeUpload(aWriter http.ResponseWriter,
 		".jar", ".jpeg", ".json", ".log", ".mp3",
 		".odf", ".odg", ".odp", ".ods", ".odt", ".otf", ".oxt",
 		".pas", ".php", ".pl", ".ppd", ".ppt", ".pptx",
-		".mpg", ".rip", ".rpm", ".sh", ".spk", ".sql", ".sxg", ".sxw",
+		".mpg", ".rip", ".rpm",
+		".sh", ".shtml", ".spk", ".sql", ".sxg", ".sxw",
 		".ttf", ".txt", ".vbox", ".vmdk", ".vcs",
 		".wav", ".xhtml", ".xls", ".xpi", ".xsl":
 		fileExt = ""
@@ -139,7 +140,7 @@ func (uh *TUploadHandler) ServeUpload(aWriter http.ResponseWriter,
 	//
 
 	// copy file into the configured destination directory
-	newFile, err := os.OpenFile(newPathFn, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0640)// #nosec G302
+	newFile, err := os.OpenFile(newPathFn, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0640) // #nosec G302
 	if nil != err {
 		return "Can't open destination file", http.StatusInternalServerError
 	}
@@ -159,13 +160,13 @@ func (uh *TUploadHandler) ServeUpload(aWriter http.ResponseWriter,
 // The given `aFile` is expected to implement both the `io.Reader`
 // and the `io.Seeker` interfaces.
 //
-// `aFile` is the file the data of which is checked.
+//	`aFile` is the file the data of which is checked.
 func getFileContentType(aFile multipart.File) (string, error) {
 	// make sure to return to the start of file:
 	defer aFile.Seek(0, io.SeekStart)
 
 	fileBuf := make([]byte, 512)
-	if len, err := aFile.Read(fileBuf); (nil != err) && (64 > len) {
+	if bLen, err := aFile.Read(fileBuf); (nil != err) && (64 > bLen) {
 		return "", err
 	}
 	contentType := http.DetectContentType(fileBuf)
@@ -175,11 +176,11 @@ func getFileContentType(aFile multipart.File) (string, error) {
 
 // NewHandler returns a new `TUploadHandler` instance.
 //
-// `aDestDir` is the directory to place the uploaded files.
+//	`aDestDir` is the directory to place the uploaded files.
 //
-// `aFieldName` the name/ID of the form/input holding the uploaded file.
+//	`aFieldName` the name/ID of the form/input holding the uploaded file.
 //
-// `aMaxSize` the max. accepted size of uploaded files.
+//	`aMaxSize` the max. accepted size of uploaded files.
 func NewHandler(aDestDir, aFieldName string, aMaxSize int64) *TUploadHandler {
 	result := TUploadHandler{
 		fn: aFieldName,
@@ -196,7 +197,7 @@ func NewHandler(aDestDir, aFieldName string, aMaxSize int64) *TUploadHandler {
 
 var (
 	// RegEx to find initial/leading path
-	pathRE = regexp.MustCompile(`^/?([\w\._-]+)?/?`)
+	uhPathRE = regexp.MustCompile(`^/?([\w\._-]+)?/?`)
 )
 
 // `urlPath()` returns the base-directory of `aURL`.
@@ -207,7 +208,7 @@ func urlPath(aURL string) string {
 	if result, err := url.QueryUnescape(aURL); nil == err {
 		aURL = result
 	}
-	matches := pathRE.FindStringSubmatch(aURL)
+	matches := uhPathRE.FindStringSubmatch(aURL)
 	if 1 < len(matches) {
 		return matches[1]
 	}
@@ -218,19 +219,19 @@ func urlPath(aURL string) string {
 // Wrap returns a handler function that includes upload handling,
 // wrapping the given `aHandler` and calling it internally.
 //
-// `aHandler` the previous handler responding to the HTTP request.
+//	`aHandler` The previous handler responding to the HTTP request.
 //
-// `aDestDir` is the directory to place the uploaded files.
+//	`aDestDir` Is the directory to place the uploaded files.
 //
-// `aFieldName` the name/ID of the form/input holding the uploaded file.
+//	`aFieldName` The name/ID of the form/input field holding the uploaded file.
 //
-// `anUpURL` the URL uploads are POSTed to.
+//	`anUpURL` The URL uploads are POSTed to.
 //
-// `aNextURL` the URL to redirect the user after a asuccessful upload.
+//	`aNextURL` The URL to redirect the user after a asuccessful upload.
 //
-// `aMaxSize` the max. accepted size of uploaded files.
+//	`aMaxSize` The max. accepted size of uploaded files.
 //
-// `aPager` optional provider of customised error message pages
+//	`aPager` Optional provider of customised error message pages
 // (or `nil` if not needed).
 func Wrap(aHandler http.Handler,
 	aDestDir, aFieldName, anUpURL, aNextURL string,
