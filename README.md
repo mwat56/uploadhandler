@@ -35,23 +35,23 @@ The main function to call is
     // wrapping the given `aHandler` and calling it internally.
     //
     func Wrap(aHandler http.Handler,
-        aDestDir, aFieldName, anUpURL, aNextURL string,
+        aDestDir, aFieldName, aUpURL, aNextURL string,
         aMaxSize int64, aPager errorhandler.TErrorPager) http.Handler {…}
 
 While at first glance the number of arguments seems to be overwhelming they allow you to fully configure the package's behaviour when an uploaded file arrives.
 Let's look at the arguments one by one:
 
 * `aHandler` is the handler function which you're already using for your web-server.
-It will continue to work as it used to before except that a certain URL (configured by `anUpURL`, see below) will be intercepted if something gets POSTed to it.
+It will continue to work as it used to before except that a certain URL (configured by `aUpURL`, see below) will be intercepted if something gets POSTed to it.
 * `aDestDir` is the directory where the incoming file is finally stored after processing it.
 * `aFieldName` is the name/ID of the form/field your web-page uses to accept the file-upload.
-* `anUpURL` is the URL your web-page's `FORM` element POSTs its data to.
+* `aUpURL` is the URL your web-page's `FORM` element POSTs its data to.
 This URL will be intercepted (if it's accessed by the POST HTTP method) and its data will be proccessed.
 * `aNextURL` is the URL the user get's forwarded to after the file upload was successfully processed.
 * `aMaxSize` defines the max. accepted size of uploaded files.
 Files bigger than that value will be rejected.
 Think carefully about which size will suit your actual needs.
-* `aPager` is an optional provider of error message pages (or `nil` if not needed).
+* `aPager` is an optional provider of customised error pages (or `nil` if not needed).
 – See [github.com/mwat56/errorhandler](https://github.com/mwat56/errorhandler) for details about that package.
 
 Here is a very [simple example](https://github.com/mwat56/uploadhandler/blob/master/cmd/demo.go) using this package:
@@ -82,7 +82,7 @@ Here is a very [simple example](https://github.com/mwat56/uploadhandler/blob/mas
     } // main()
 
 You'll probably store the required values for e.g. `aDestDir` and `aMaxSize` in some kind of config-file, reading them at start of your web-server, and passing them along to the final `Wrap(…)` call instead of hard-coding them like in the example above.
-And the values of `anUpURL` and `aFieldName` must, obviously, correspond with those you're actually using in your own application.
+And the values of `aUpURL` and `aFieldName` must, obviously, correspond with those you're actually using in your own application.
 If you don't use [customised error pages](https://github.com/mwat56/errorhandler) you can pass `nil` for the `aPager` argument as done in the example.
 
 So, to add the file-upload functionality to your web-server application all that's needed is a single `Wrap()` function call. That's it.

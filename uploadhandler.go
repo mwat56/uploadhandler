@@ -9,9 +9,9 @@ package uploadhandler
 //lint:file-ignore ST1017 - I prefer Yoda conditions
 
 /*
-CREDITS for getting me started:
-https://zupzup.org/go-http-file-upload-download/
-*/
+ * CREDITS for getting me started:
+ * https://zupzup.org/go-http-file-upload-download/
+ */
 
 import (
 	"fmt"
@@ -30,7 +30,8 @@ import (
 )
 
 type (
-	// TUploadHandler embeds a `TErrorPager` which provides error page handling.
+	// TUploadHandler embeds a `TErrorPager` which provides
+	// error page handling.
 	TUploadHandler struct {
 		dd string                   // destination directory
 		ep errorhandler.TErrorPager // provider of customised error pages
@@ -46,7 +47,7 @@ type (
 //
 //	`aData` is the original error text.
 //
-//	`aStatus` is the number of the actual HTTP error.
+//	`aStatus` is the code number of the actual HTTP error.
 func (uh *TUploadHandler) returnError(aWriter http.ResponseWriter,
 	aData []byte, aStatus int) {
 	if nil != uh.ep {
@@ -107,6 +108,10 @@ func (uh *TUploadHandler) ServeUpload(aWriter http.ResponseWriter,
 	switch fileExt {
 	case ".asc":
 		fileExt = ".txt"
+	case ".jpg":
+		fileExt = ".jpeg"
+	case ".mpg":
+		fileExt = ".mpeg"
 		//TODO possibly re-map more extensions
 	default:
 		break
@@ -123,7 +128,7 @@ func (uh *TUploadHandler) ServeUpload(aWriter http.ResponseWriter,
 		".jar", ".jpeg", ".json", ".log", ".mp3",
 		".odf", ".odg", ".odp", ".ods", ".odt", ".otf", ".oxt",
 		".pas", ".php", ".pl", ".ppd", ".ppt", ".pptx",
-		".mpg", ".rip", ".rpm",
+		".mpeg", ".rip", ".rpm",
 		".sh", ".shtml", ".spk", ".sql", ".sxg", ".sxw",
 		".ttf", ".txt", ".vbox", ".vmdk", ".vcs",
 		".wav", ".xhtml", ".xls", ".xpi", ".xsl":
@@ -134,10 +139,6 @@ func (uh *TUploadHandler) ServeUpload(aWriter http.ResponseWriter,
 		time.Now().UnixNano(),
 		strings.ReplaceAll(fheader.Filename, " ", "_"),
 		fileExt))
-
-	//TODO
-	//FIXME use os.Rename() instead of copying the whole data
-	//
 
 	// copy file into the configured destination directory
 	newFile, err := os.OpenFile(newPathFn, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0640) // #nosec G302
@@ -225,7 +226,7 @@ func urlPath(aURL string) string {
 //
 //	`aFieldName` The name/ID of the form/input field holding the uploaded file.
 //
-//	`anUpURL` The URL uploads are POSTed to.
+//	`aUpURL` The URL uploads are POSTed to.
 //
 //	`aNextURL` The URL to redirect the user after a asuccessful upload.
 //
@@ -234,14 +235,14 @@ func urlPath(aURL string) string {
 //	`aPager` Optional provider of customised error message pages
 // (or `nil` if not needed).
 func Wrap(aHandler http.Handler,
-	aDestDir, aFieldName, anUpURL, aNextURL string,
+	aDestDir, aFieldName, aUpURL, aNextURL string,
 	aMaxSize int64, aPager errorhandler.TErrorPager) http.Handler {
 	uh := NewHandler(aDestDir, aFieldName, aMaxSize)
 	uh.ep = aPager
 
 	return http.HandlerFunc(
 		func(aWriter http.ResponseWriter, aRequest *http.Request) {
-			if ("POST" == aRequest.Method) && (urlPath(aRequest.URL.Path) == anUpURL) {
+			if ("POST" == aRequest.Method) && (urlPath(aRequest.URL.Path) == aUpURL) {
 				txt, status := uh.ServeUpload(aWriter, aRequest)
 				if 200 == status {
 					http.Redirect(aWriter, aRequest, aNextURL, http.StatusSeeOther)
