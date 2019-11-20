@@ -1,3 +1,9 @@
+/*
+   Copyright © 2019 M.Watermann, 10247 Berlin, Germany
+                  All rights reserved
+               EMail : <support@mwat.de>
+*/
+
 package main
 
 import (
@@ -25,6 +31,7 @@ func testHandler(aWriter http.ResponseWriter, aRequest *http.Request) {
 	// send it to the remote user:
 	aWriter.WriteHeader(200)
 	_, _ = aWriter.Write([]byte(page))
+
 	// POST is handled by the UploadHandler
 } // testHandler()
 
@@ -33,7 +40,5 @@ func main() {
 	handler := uploadhandler.Wrap(http.HandlerFunc(testHandler),
 		"./static", "uploadFile", "up", "/", 10*1024*1024, nil)
 
-	if err := http.ListenAndServe("127.0.0.1:8080", handler); nil != err {
-		log.Fatalf("%s Problem: %v", os.Args[0], err)
-	}
+	log.Fatalf("%s Problem: %v", os.Args[0], http.ListenAndServe("127.0.0.1:8080", handler))
 } // main()
