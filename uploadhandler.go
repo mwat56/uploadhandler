@@ -71,7 +71,7 @@ func (uh *TUploadHandler) returnError(aWriter http.ResponseWriter,
 //
 //	`aRequest` is the incoming upload request.
 func (uh *TUploadHandler) ServeUpload(aWriter http.ResponseWriter,
-	aRequest *http.Request) (string, int) {
+	aRequest *http.Request) (rCause string, rCode int) {
 
 	// first, check the file size
 	aRequest.Body = http.MaxBytesReader(aWriter, aRequest.Body, uh.ms)
@@ -121,17 +121,16 @@ func (uh *TUploadHandler) ServeUpload(aWriter http.ResponseWriter,
 	switch strings.ToLower(filepath.Ext(fheader.Filename)) {
 	case fileExt:
 		fileExt = ""
-	case ".amr", ".avi", ".bak", ".bibtex", ".bz2",
-		".cfg", ".conf", ".css", ".csv",
+	case ".amr", ".avi", ".azw3", ".bak", ".bibtex", ".bz2",
+		".cfg", ".com", ".conf", ".css", ".csv",
 		".db", ".deb", ".doc", ".docx", ".dia", ".epub", ".exe",
 		".flv", ".gz", ".htm", ".html", ".ics", ".iso",
-		".jar", ".jpeg", ".json", ".log", ".mp3",
+		".jar", ".jpeg", ".json", ".log", ".mobi", ".mp3", ".mp4", ".mpeg",
 		".odf", ".odg", ".odp", ".ods", ".odt", ".otf", ".oxt",
-		".pas", ".php", ".pl", ".ppd", ".ppt", ".pptx",
-		".mpeg", ".rip", ".rpm",
-		".sh", ".shtml", ".spk", ".sql", ".sxg", ".sxw",
+		".pas", ".pdf", ".php", ".pl", ".ppd", ".ppt", ".pptx",
+		".rip", ".rpm", ".sh", ".shtml", ".spk", ".sql", ".sxg", ".sxw",
 		".ttf", ".txt", ".vbox", ".vmdk", ".vcs",
-		".wav", ".xhtml", ".xls", ".xpi", ".xsl":
+		".wav", ".xhtml", ".xls", ".xpi", ".xsl", ".zip":
 		fileExt = ""
 	}
 
