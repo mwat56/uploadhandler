@@ -121,15 +121,18 @@ func (uh *TUploadHandler) ServeUpload(aWriter http.ResponseWriter,
 	switch strings.ToLower(filepath.Ext(fheader.Filename)) {
 	case fileExt:
 		fileExt = ""
-	case ".amr", ".avi", ".azw3", ".bak", ".bibtex", ".bz2",
+	case ".amr", ".arj", ".avi", ".azw3",
+		".bak", ".bibtex", ".bz2",
 		".cfg", ".com", ".conf", ".css", ".csv",
-		".db", ".deb", ".doc", ".docx", ".dia", ".epub", ".exe",
-		".flv", ".gz", ".htm", ".html", ".ics", ".iso",
-		".jar", ".jpeg", ".jpg", ".json", ".log",
-		".mobi", ".mp3", ".mp4", ".mpeg",
+		".db", ".deb", ".doc", ".docx", ".dia",
+		".epub", ".exe", ".flv",
+		".gif", ".gz", ".htm", ".html",
+		".ics", ".iso", ".jar", ".jpeg", ".json",
+		".log", ".md", ".mobi", ".mp3", ".mp4", ".mpeg",
 		".odf", ".odg", ".odp", ".ods", ".odt", ".otf", ".oxt",
 		".pas", ".pdf", ".php", ".pl", ".ppd", ".ppt", ".pptx",
-		".rip", ".rpm", ".sh", ".shtml", ".spk", ".sql", ".sxg", ".sxw",
+		".rip", ".rpm",
+		".sh", ".shtml", ".spk", ".sql", ".sxg", ".sxw",
 		".ttf", ".txt", ".vbox", ".vmdk", ".vcs",
 		".wav", ".xhtml", ".xls", ".xpi", ".xsl", ".zip":
 		fileExt = ""
