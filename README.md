@@ -25,7 +25,7 @@ This middleware package does just this: it accepts uploads (up to a certain size
 
 You can use `Go` to install this package for you:
 
-    go get -u github.com/mwat56/uploadhandler
+	go get -u github.com/mwat56/uploadhandler
 
 ## Usage
 
@@ -46,8 +46,8 @@ It will continue to work as it used to before except that a certain URL (configu
 * `aDestDir` is the directory where the incoming file is finally stored after processing it.
 * `aFieldName` is the name/ID of the form/field your web-page uses to accept the file-upload.
 * `aUpURL` is the URL your web-page's `FORM` element POSTs its data to.
-This URL will be intercepted (if it's accessed by the POST HTTP method) and its data will be proccessed.
-* `aNextURL` is the URL the user get's forwarded to after the file upload was successfully processed.
+This URL will be intercepted (if it's accessed by the POST HTTP method) and its data will be processed.
+* `aNextURL` is the URL the user gets forwarded to after the file upload was successfully processed.
 * `aMaxSize` defines the max. accepted size of uploaded files.
 Files bigger than that value will be rejected.
 Think carefully about which size will suit your actual needs.
@@ -122,7 +122,7 @@ The following external libraries were used building `UploadHandler`:
 
 ## Licence
 
-        Copyright © 2019 M.Watermann, 10247 Berlin, Germany
+        Copyright © 2019, 2020 M.Watermann, 10247 Berlin, Germany
                         All rights reserved
                     EMail : <support@mwat.de>
 
