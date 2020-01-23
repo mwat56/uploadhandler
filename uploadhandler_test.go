@@ -43,7 +43,7 @@ func Test_urlPath(t *testing.T) {
 
 func TestTUploadHandler_newFilename(t *testing.T) {
 	dir, _ := filepath.Abs(`./`)
-	h1 := NewHandler(dir, `Upload`, 1024*1024)
+	h1 := NewHandler(dir, `Upload`, 0)
 	re := regexp.MustCompile(dir + `/[a-f0-9]+_.+\.[a-z]+$`)
 	type args struct {
 		aFilename  string

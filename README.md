@@ -48,11 +48,11 @@ It will continue to work as it used to before except that a certain URL (configu
 * `aUpURL` is the URL your web-page's `FORM` element POSTs its data to.
 This URL will be intercepted (if it's accessed by the POST HTTP method) and its data will be processed.
 * `aNextURL` is the URL the user gets forwarded to after the file upload was successfully processed.
-* `aMaxSize` defines the max. accepted size of uploaded files.
+* `aMaxSize` defines the max. accepted size of uploaded files; if the given value is smaller/equal to zero then a maximal filesize of 8 MB is used.
 Files bigger than that value will be rejected.
 Think carefully about which size will suit your actual needs.
-* `aPager` is an optional provider of customised error pages (or `nil` if not needed).
-– See [github.com/mwat56/errorhandler](https://github.com/mwat56/errorhandler) for details about that package.
+* `aPager` is an optional provider of customised error pages (or `nil` if not needed). –
+See [github.com/mwat56/errorhandler](https://github.com/mwat56/errorhandler) for details about that package.
 
 Here is a very [simple example](https://github.com/mwat56/uploadhandler/blob/master/cmd/demo.go) using this package:
 
@@ -97,7 +97,7 @@ This function call needs only a subset of the arguments passed to the `Wrap(…)
 
 * `aDestDir`: the directory where the incoming file is finally stored after processing it.
 * `aFieldName`: the name/ID of the form/field your web-page uses to accept the file-upload.
-* `aMaxSize`: the max. accepted size of uploaded files.
+* `aMaxSize`: the max. accepted size of uploaded files; if the given value is smaller/equal to zero then a maximal filesize of 8 MB is used.
 
 The `NewHandler()` function's result provides the method
 

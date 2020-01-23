@@ -114,11 +114,11 @@ func (uh *TUploadHandler) returnError(aWriter http.ResponseWriter,
 
 // ServeUpload handles the incoming file upload.
 //
-// The first return value will provide a short error message
-// and the second return value the HTTP status code.
+// The first return value (`rCause`) will provide a short error message
+// and the second return value (`rCode`) the HTTP status code.
 // If that code is `200` (i.e. everything went well) then the
-// message return value will hold the path/file name of the
-// saved file.
+// message return value (`rCause`) will hold the path/file name of
+// the saved file.
 //
 //	`aWriter` writes the response to the remote user.
 //
@@ -198,23 +198,28 @@ func getFileContentType(aFile multipart.File) (string, error) {
 
 // NewHandler returns a new `TUploadHandler` instance.
 //
+// If the `aMaxSize` value is smaller/equal to zero a maximal filesize
+// of 8 MB is used.
+//
 //	`aDestDir` is the directory to place the uploaded files.
 //
 //	`aFieldName` the name/ID of the form/input holding the uploaded file.
 //
 //	`aMaxSize` the max. accepted size of uploaded files.
-func NewHandler(aDestDir, aFieldName string, aMaxSize int64) *TUploadHandler {
-	result := TUploadHandler{
-		fn: aFieldName,
-		ms: aMaxSize,
+func NewHandler(aDestDir, aFieldName string, aMaxSize int64) (rHandler *TUploadHandler) {
+	rHandler = &TUploadHandler{fn: aFieldName}
+	if 0 < aMaxSize {
+		rHandler.ms = aMaxSize
+	} else {
+		rHandler.ms = int64(1 << 23)
 	}
 	if bd, err := filepath.Abs(aDestDir); nil == err {
-		result.dd = bd
+		rHandler.dd = bd
 	} else {
-		result.dd = aDestDir
+		rHandler.dd = aDestDir
 	}
 
-	return &result
+	return
 } // NewHandler()
 
 var (
@@ -251,7 +256,8 @@ func urlPath(aURL string) string {
 //
 //	`aNextURL` The URL to redirect the user after a successful upload.
 //
-//	`aMaxSize` The max. accepted size of uploaded files.
+//	`aMaxSize` The max. accepted size of uploaded files; if the given
+// value is smaller/equal to zero then a maximal filesize of 8 MB is used.
 //
 //	`aPager` Optional provider of customised error message pages
 // (or `nil` if not needed).
