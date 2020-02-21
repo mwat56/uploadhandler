@@ -148,7 +148,7 @@ func (uh *TUploadHandler) ServeUpload(aWriter http.ResponseWriter,
 	}
 
 	fileExt := ""
-	if fileEndings, err := mime.ExtensionsByType(fileType); nil == err {
+	if fileEndings, err2 := mime.ExtensionsByType(fileType); nil == err2 {
 		if nil == fileEndings {
 			fileExt = ".bin"
 		} else {
