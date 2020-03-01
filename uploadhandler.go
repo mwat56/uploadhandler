@@ -185,7 +185,9 @@ func (uh *TUploadHandler) ServeUpload(aWriter http.ResponseWriter,
 //	`aFile` is the file the data of which is checked.
 func getFileContentType(aFile multipart.File) (string, error) {
 	// make sure to return to the start of file:
-	defer aFile.Seek(0, io.SeekStart)
+	defer func() {
+		_, _ = aFile.Seek(0, io.SeekStart)
+	}()
 
 	fileBuf := make([]byte, 512)
 	if bLen, err := aFile.Read(fileBuf); (nil != err) && (64 > bLen) {
