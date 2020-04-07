@@ -97,9 +97,7 @@ func (uh *TUploadHandler) newFilename(aFilename, aExtension string) string {
 // to the remote user.
 //
 //	`aWriter` writes the response to the remote user.
-//
 //	`aData` is the original error text.
-//
 //	`aStatus` is the code number of the actual HTTP error.
 func (uh *TUploadHandler) returnError(aWriter http.ResponseWriter,
 	aData []byte, aStatus int) {
@@ -121,7 +119,6 @@ func (uh *TUploadHandler) returnError(aWriter http.ResponseWriter,
 // the saved file.
 //
 //	`aWriter` writes the response to the remote user.
-//
 //	`aRequest` is the incoming upload request.
 func (uh *TUploadHandler) ServeUpload(aWriter http.ResponseWriter,
 	aRequest *http.Request) (rCause string, rCode int) {
@@ -177,7 +174,7 @@ func (uh *TUploadHandler) ServeUpload(aWriter http.ResponseWriter,
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-// `getFileContentType()` returns the content type of `aFile`
+// `getFileContentType()` returns the content type of `aFile`.
 //
 // The given `aFile` is expected to implement both the `io.Reader`
 // and the `io.Seeker` interfaces.
@@ -204,9 +201,7 @@ func getFileContentType(aFile multipart.File) (string, error) {
 // of 8 MB is used.
 //
 //	`aDestDir` is the directory to place the uploaded files.
-//
 //	`aFieldName` the name/ID of the form/input holding the uploaded file.
-//
 //	`aMaxSize` the max. accepted size of uploaded files.
 func NewHandler(aDestDir, aFieldName string, aMaxSize int64) (rHandler *TUploadHandler) {
 	rHandler = &TUploadHandler{fn: aFieldName}
@@ -215,8 +210,8 @@ func NewHandler(aDestDir, aFieldName string, aMaxSize int64) (rHandler *TUploadH
 	} else {
 		rHandler.ms = int64(1 << 23)
 	}
-	if bd, err := filepath.Abs(aDestDir); nil == err {
-		rHandler.dd = bd
+	if absDir, err := filepath.Abs(aDestDir); nil == err {
+		rHandler.dd = absDir
 	} else {
 		rHandler.dd = aDestDir
 	}
@@ -249,18 +244,12 @@ func urlPath(aURL string) string {
 // wrapping the given `aHandler` and calling it internally.
 //
 //	`aHandler` The previous handler responding to the HTTP request.
-//
 //	`aDestDir` Is the directory to place the uploaded files.
-//
 //	`aFieldName` The name/ID of the form/input field holding the uploaded file.
-//
 //	`aUpURL` The URL uploads are POSTed to.
-//
 //	`aNextURL` The URL to redirect the user after a successful upload.
-//
 //	`aMaxSize` The max. accepted size of uploaded files; if the given
-// value is smaller/equal to zero then a maximal filesize of 8 MB is used.
-//
+//	value is smaller/equal to zero then a maximal filesize of 8 MB is used.
 //	`aPager` Optional provider of customised error message pages
 // (or `nil` if not needed).
 func Wrap(aHandler http.Handler,

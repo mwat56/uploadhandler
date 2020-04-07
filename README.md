@@ -16,6 +16,8 @@
 	- [Libraries](#libraries)
 	- [Licence](#licence)
 
+----
+
 ## Purpose
 
 Sometimes a web-server application needs a way to accept file uploads from the remote users.
@@ -82,7 +84,8 @@ Here is a very [simple example](https://github.com/mwat56/uploadhandler/blob/mas
     } // main()
 
 You'll probably store the required values for e.g. `aDestDir` and `aMaxSize` in some kind of config-file, reading them at start of your web-server, and passing them along to the final `Wrap(…)` call instead of hard-coding them like in the example above.
-And the values of `aUpURL` and `aFieldName` must, obviously, correspond with those you're actually using in your own application.
+And the values of `aUpURL` and `aFieldName` must, obviously, correspond with those you're actually using in your own application's forms.
+
 If you don't use [customised error pages](https://github.com/mwat56/errorhandler) you can pass `nil` for the `aPager` argument as done in the example.
 
 So, to add the file-upload functionality to your web-server application all that's needed is a single `Wrap()` function call. That's it.
@@ -131,3 +134,5 @@ The following external libraries were used building `UploadHandler`:
 > This software is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 >
 > You should have received a copy of the GNU General Public License along with this program. If not, see the [GNU General Public License](http://www.gnu.org/licenses/gpl.html) for details.
+
+----
