@@ -6,8 +6,8 @@
 [![Issues](https://img.shields.io/github/issues/mwat56/uploadhandler.svg)](https://github.com/mwat56/uploadhandler/issues?q=is%3Aopen+is%3Aissue)
 [![Size](https://img.shields.io/github/repo-size/mwat56/uploadhandler.svg)](https://github.com/mwat56/uploadhandler/)
 [![Tag](https://img.shields.io/github/tag/mwat56/uploadhandler.svg)](https://github.com/mwat56/uploadhandler/tags)
-[![License](https://img.shields.io/github/license/mwat56/uploadhandler.svg)](https://github.com/mwat56/uploadhandler/blob/master/LICENSE)
-[![View examples](https://img.shields.io/badge/learn%20by-examples-0077b3.svg)](https://github.com/mwat56/uploadhandler/blob/master/cmd/demo.go)
+[![License](https://img.shields.io/github/license/mwat56/uploadhandler.svg)](https://github.com/mwat56/uploadhandler/blob/main/LICENSE)
+[![View examples](https://img.shields.io/badge/learn%20by-examples-0077b3.svg)](https://github.com/mwat56/uploadhandler/blob/main/cmd/demo.go)
 
 - [UploadHandler](#uploadhandler)
 	- [Purpose](#purpose)
@@ -56,7 +56,7 @@ Think carefully about which size will suit your actual needs.
 * `aPager` is an optional provider of customised error pages (or `nil` if not needed). –
 See [github.com/mwat56/errorhandler](https://github.com/mwat56/errorhandler) for details about that package.
 
-Here is a very [simple example](https://github.com/mwat56/uploadhandler/blob/master/cmd/demo.go) using this package:
+Here is a very [simple example](https://github.com/mwat56/uploadhandler/blob/main/cmd/demo.go) using this package:
 
     func testHandler(aWriter http.ResponseWriter, aRequest *http.Request) {
         // the upload form to show
