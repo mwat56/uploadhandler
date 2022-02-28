@@ -1,9 +1,8 @@
 /*
-   Copyright © 2019, 2021 M.Watermann, 10247 Berlin, Germany
+   Copyright © 2019, 2022 M.Watermann, 10247 Berlin, Germany
                    All rights reserved
                EMail : <support@mwat.de>
 */
-
 package uploadhandler
 
 //lint:file-ignore ST1017 - I prefer Yoda conditions

@@ -2,6 +2,7 @@
 *.db
 demo
 .git/
+.github/
 static/
 TODO*
 .vscode/
