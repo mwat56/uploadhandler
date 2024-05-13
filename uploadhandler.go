@@ -1,7 +1,8 @@
 /*
-   Copyright © 2019, 2022 M.Watermann, 10247 Berlin, Germany
-                   All rights reserved
-               EMail : <support@mwat.de>
+Copyright © 2019, 2024 M.Watermann, 10247 Berlin, Germany
+
+	    All rights reserved
+	EMail : <support@mwat.de>
 */
 package uploadhandler
 
@@ -239,10 +240,10 @@ func urlPath(aURL string) string {
 	return aURL
 } // urlPath()
 
-// Wrap returns a handler function that includes upload handling,
-// wrapping the given `aHandler` and calling it internally.
+// `Wrap()` returns a handler function that includes upload handling,
+// wrapping the given `aNext` and calling it internally.
 //
-//	`aHandler` The previous handler responding to the HTTP request.
+//	`aNext` The previous handler responding to the HTTP request.
 //	`aDestDir` Is the directory to place the uploaded files.
 //	`aFieldName` The name/ID of the form/input field holding the uploaded file.
 //	`aUpURL` The URL uploads are POSTed to.
@@ -250,8 +251,9 @@ func urlPath(aURL string) string {
 //	`aMaxSize` The max. accepted size of uploaded files; if the given
 //	value is smaller/equal to zero then a maximal filesize of 8 MB is used.
 //	`aPager` Optional provider of customised error message pages
+//
 // (or `nil` if not needed).
-func Wrap(aHandler http.Handler,
+func Wrap(aNext http.Handler,
 	aDestDir, aFieldName, aUpURL, aNextURL string,
 	aMaxSize int64, aPager errorhandler.TErrorPager) http.Handler {
 	uh := NewHandler(aDestDir, aFieldName, aMaxSize)
@@ -268,7 +270,7 @@ func Wrap(aHandler http.Handler,
 				}
 				return
 			}
-			aHandler.ServeHTTP(aWriter, aRequest)
+			aNext.ServeHTTP(aWriter, aRequest)
 		})
 } // Wrap()
 
