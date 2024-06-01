@@ -1,7 +1,8 @@
 /*
-   Copyright © 2019, 2022 M.Watermann, 10247 Berlin, Germany
-                   All rights reserved
-               EMail : <support@mwat.de>
+Copyright © 2019, 2024  M.Watermann, 10247 Berlin, Germany
+
+	    All rights reserved
+	EMail : <support@mwat.de>
 */
 package uploadhandler
 
